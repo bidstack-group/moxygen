@@ -1,4 +1,4 @@
-# {{kind}} `{{name}}` {{anchor refid}}
+# {{anchor refid}} {{kind}} `{{name}}`
 
 {{briefdescription}}
 
@@ -16,12 +16,12 @@
 ## Members
 
 {{#each filtered.members}}
-#### {{title proto}} {{anchor refid}}
+#### {{anchor refid}} {{title proto}}
 
 {{#if enumvalue}}
  Values                         | Descriptions                                
 --------------------------------|---------------------------------------------
-{{#each enumvalue}}{{cell name}}            | {{cell summary}}
+{{#each enumvalue}}{{cell refid}} {{cell name}}            | {{cell summary}}
 {{/each}}
 {{/if}}
 

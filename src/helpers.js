@@ -21,12 +21,18 @@ module.exports = {
         refs = e.split(/(\[.*\]\(.*\)|\n|\s{2}\n)/g);
         refs.forEach(function (f) {
           if (f.charAt(0) == '[') {
-            // link
-            var link = f.match(/\[(.*)\]\((.*)\)/);
+            // links
+            s += f.replace(/\[(.*?)\]\((.*?)\)/g, function(_, text, url) {
+              var o = "";
+              isInline ? (o += '`') && (isInline = false) : null;
+              o += '[`' + text + '`](' + url + ')';
+              return o;
+            });
+            /*var link = f.match(/\[(.*)\]\((.*)\)/);
             if (link) {
               isInline ? (s += '`') && (isInline = false) : null;
               s += '[`' + link[1] + '`](' + link[2] + ')';
-            }
+            }*/
           }
           else if (f == '\n' || f == '  \n') {
             // line break
@@ -51,7 +57,7 @@ module.exports = {
       return '{#' + name + '}';
     }
     else if (options.htmlAnchors) {
-      return '<a id="' + name + '"></a>';
+      return '<a name="' + name + '"></a>';
     }
     else {
       return '';
@@ -68,6 +74,8 @@ module.exports = {
 
   // Replace ref links to point to correct output file if needed
   resolveRefs: function(content, compound, references, options) {
+    if (!content)
+      return content
     return content.replace(/\{#ref ([^ ]+) #\}/g, function(_, refid) {
       var ref = references[refid]
       var page = this.findParent(ref, ['page']);

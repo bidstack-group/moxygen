@@ -10,7 +10,7 @@
 ## Members
 
 {{#each filtered.members}}
-#### {{title proto}} {{anchor refid}}
+#### {{anchor refid}} {{title proto}}
 
 {{briefdescription}}
 

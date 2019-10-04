@@ -278,6 +278,8 @@ module.exports = {
         m = m.concat(toMarkdown(memberdef.type), ' ');
         // m = m.concat(memberdef.name[0]._);
         m = m.concat(markdown.refLink(member.name, member.refid));
+        if (memberdef.argsstring[0]._)
+          m = m.concat(memberdef.argsstring[0]._);
         break;
 
       case 'property':
@@ -285,6 +287,8 @@ module.exports = {
         m = m.concat(toMarkdown(memberdef.type), ' ');
         // m = m.concat(memberdef.name[0]._);
         m = m.concat(markdown.refLink(member.name, member.refid));
+        if (memberdef.argsstring[0]._)
+          m = m.concat(memberdef.argsstring[0]._);
         break;
 
       case 'enum':
@@ -292,6 +296,7 @@ module.exports = {
         if (memberdef.enumvalue) {
           memberdef.enumvalue.forEach(function (param, argn) {
             var enumvalue = {}
+            enumvalue.refid = helpers.getAnchor(param.$.id, module.exports.parserOptions);
             copy(enumvalue, 'name', param);
             copy(enumvalue, 'briefdescription', param);
             copy(enumvalue, 'detaileddescription', param);
