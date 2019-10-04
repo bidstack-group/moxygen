@@ -24,10 +24,17 @@ module.exports = {
             // links
             s += f.replace(/\[(.*?)\]\((.*?)\)/g, function(_, text, url) {
               var o = "";
-              isInline ? (o += '`') && (isInline = false) : null;
+              if (isInline)
+                o += '`';
               o += '[`' + text + '`](' + url + ')';
+              if (isInline)
+                o += '`';
               return o;
             });
+            if (s[s.length - 1] == '`') {
+              s = s.substr(0, s.length - 1);
+              isInline = false;
+            }
             /*var link = f.match(/\[(.*)\]\((.*)\)/);
             if (link) {
               isInline ? (s += '`') && (isInline = false) : null;

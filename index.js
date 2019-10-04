@@ -44,7 +44,8 @@ module.exports = {
         'signal',
         'public-slot',
         'protected-slot',
-        'public-type'
+        'public-type',
+        'typedef',
       ],
       compounds: [
         'namespace',

@@ -310,6 +310,12 @@ module.exports = {
         m = m.concat([member.kind, ' ', markdown.refLink(member.name, member.refid)]);
         break;
 
+      case 'typedef':
+        m = m.concat([member.kind, ' ', toMarkdown(memberdef.type), ' ', markdown.refLink(member.name, member.refid)]);
+        if (memberdef.argsstring[0]._)
+          m = m.concat(memberdef.argsstring[0]._);
+        break;
+
       default:
         // m.push(member.kind + ' ' + member.name);
         m = m.concat([member.kind, ' ', markdown.refLink(member.name, member.refid)]);
