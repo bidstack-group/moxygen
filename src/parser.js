@@ -26,6 +26,8 @@ function toMarkdown(element, context) {
     case 'object':
       if (Array.isArray(element)) {
         element.forEach(function (value, key) {
+          if (s && s[s.length - 1] != " ")
+            s += " ";
           s += toMarkdown(value, context);
         });
       }
@@ -34,7 +36,7 @@ function toMarkdown(element, context) {
         // opening the element
         switch (element['#name']) {
           case 'ref': return s + markdown.refLink(toMarkdown(element.$$), element.$.refid);
-          case '__text__': s = element._; break;
+          case '__text__': s = trim(element._); break;
           case 'emphasis': s = '*'; break;
           case 'bold': s = '**'; break;
           case 'parametername':
@@ -241,7 +243,7 @@ module.exports = {
           m.push('template<');
           if (memberdef.templateparamlist.length > 0 && memberdef.templateparamlist.param) {
             memberdef.templateparamlist[0].param.forEach(function (param, argn) {
-              m = m.concat(argn == 0 ? [] : ',');
+              m = m.concat(argn == 0 ? [] : ', ');
               m = m.concat([toMarkdown(param.type)]);
               m = m.concat(param.declname ? [' ', toMarkdown(param.declname)] : []);
             });
@@ -258,7 +260,7 @@ module.exports = {
         m = m.concat('(');
         if (memberdef.param) {
           memberdef.param.forEach(function (param, argn) {
-            m = m.concat(argn == 0 ? [] : ',');
+            m = m.concat(argn == 0 ? [] : ', ');
             m = m.concat([toMarkdown(param.type)]);
             m = m.concat(param.declname ? [' ', toMarkdown(param.declname)] : []);
           });
@@ -404,7 +406,7 @@ module.exports = {
               section.memberdef.forEach(function (memberdef) {
                 var member = this.references[memberdef.$.id];
 
-                if (compound.kind == 'group') {
+                if (compound.kind == 'group' || compound.kind == 'namespace') {
                   member.groupid = compound.id;
                   member.groupname = compound.name;
                 }
@@ -432,6 +434,7 @@ module.exports = {
       case 'struct':
       case 'union':
       case 'typedef':
+      case 'variable':
 
         // set namespace reference
         var nsp = compound.name.split('::');
